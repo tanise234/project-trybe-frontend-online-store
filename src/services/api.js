@@ -20,7 +20,7 @@ export async function getProductsFromCategoryAndQuery(categoryId, query) {
     return dataJson;
   }
 
-  if (Object.values(obj).every((item) => item)) {
+  if (query && categoryId) {
     const urlCat = `https://api.mercadolibre.com/sites/MLB/search?category=${categoryId}&q=${query}`;
     const getFetch = await fetch(urlCat);
     const dataJson = await getFetch.json();
