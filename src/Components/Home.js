@@ -2,6 +2,7 @@ import React from 'react';
 import { getProductsFromCategoryAndQuery } from '../services/api';
 import FIlterableProductList from './FIlterableProductList';
 import SearchBar from './SearchProduct';
+import CartButton from './CartButton';
 
 class Home extends React.Component {
   constructor(props) {
@@ -46,6 +47,7 @@ class Home extends React.Component {
         ) : (
           <h2>Nenhum produto foi encontrado</h2>
         )}
+        <CartButton />
       </div>
     );
   }
