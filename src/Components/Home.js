@@ -1,4 +1,5 @@
 import React from 'react';
+import CartButton from './CartButton';
 
 class Home extends React.Component {
   render() {
@@ -8,6 +9,7 @@ class Home extends React.Component {
           Digite algum termo de pesquisa ou escolha uma categoria.
 
         </h1>
+        <CartButton />
       </div>
     );
   }
