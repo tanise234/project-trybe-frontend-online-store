@@ -1,18 +1,17 @@
 import React from 'react';
 import './App.css';
-import Categories from './Components/Categories';
-import Home from './Components/Home';
+import Content from './Components/Content';
+// import Categories from './Components/Categories';
 
 function App() {
   return (
+
     <div>
-      <main>
-        <Home />
-      </main>
-      <nav>
-        <Categories />
-      </nav>
+      <main className="principal" />
+      <Content />
+      <nav className="categorias" />
     </div>
+
   );
 }
 
