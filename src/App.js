@@ -7,9 +7,9 @@ function App() {
   return (
 
     <div>
-      <main className="principal" />
+
       <Content />
-      <nav className="categorias" />
+
     </div>
 
   );

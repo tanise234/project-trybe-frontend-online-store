@@ -3,12 +3,14 @@ import { getProductsFromCategoryAndQuery } from '../services/api';
 import FIlterableProductList from './FIlterableProductList';
 import SearchBar from './SearchProduct';
 import CartButton from './CartButton';
+import Categories from './Categories';
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      isFirstLoading: true,
       searchValue: '',
       productList: [],
     };
@@ -22,7 +24,9 @@ class Home extends React.Component {
       undefined,
       searchValue,
     );
-    this.setState({ productList: setProducts.results });
+    if (setProducts) {
+      this.setState({ productList: setProducts.results, isFirstLoading: false });
+    }
   }
 
   handleOnInputChange({ target: { name, type, checked, value } }) {
@@ -31,23 +35,26 @@ class Home extends React.Component {
   }
 
   render() {
-    const { searchValue, productList } = this.state;
+    const { searchValue, productList, isFirstLoading } = this.state;
     return (
       <div>
-        <h1 data-testid="home-initial-message">
-          Digite algum termo de pesquisa ou escolha uma categoria.
-        </h1>
+
         <SearchBar
           onClick={ () => this.handleSearchButton(searchValue) }
           onChange={ this.handleOnInputChange }
           value={ searchValue }
         />
-        {productList ? (
-          <FIlterableProductList productList={ productList } />
+        {isFirstLoading ? (
+          <h1 data-testid="home-initial-message">
+            Digite algum termo de pesquisa ou escolha uma categoria.
+          </h1>
         ) : (
-          <h2>Nenhum produto foi encontrado</h2>
+          <FIlterableProductList productList={ productList } />
         )}
         <CartButton />
+        <nav>
+          <Categories />
+        </nav>
       </div>
     );
   }

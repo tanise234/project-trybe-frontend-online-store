@@ -6,7 +6,6 @@ import Cart from './Cart';
 class Content extends React.Component {
   render() {
     return (
-
       <Router>
         <Route exact path="/" component={ Home } />
         <Route path="/Meu-carrinho" component={ Cart } />

@@ -17,7 +17,11 @@ class FIlterableProductList extends Component {
     const { productList } = this.props;
     return (
       <div>
-        {this.renderProductList(productList)}
+        {productList.length ? (
+          this.renderProductList(productList)
+        ) : (
+          <h2>Nenhum produto foi encontrado</h2>
+        )}
       </div>
     );
   }
