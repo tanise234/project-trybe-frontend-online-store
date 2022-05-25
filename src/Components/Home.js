@@ -13,15 +13,19 @@ class Home extends React.Component {
       isFirstLoading: true,
       searchValue: '',
       productList: [],
+      radioValue: '',
     };
 
     this.handleSearchButton = this.handleSearchButton.bind(this);
     this.handleOnInputChange = this.handleOnInputChange.bind(this);
+    this.handleRadioInput = this.handleRadioInput.bind(this);
   }
 
-  async handleSearchButton(searchValue) {
+  async handleSearchButton(searchValue, radio = undefined) {
+    const { radioValue } = this.state;
+    const setRadio = radio || radioValue;
     const setProducts = await getProductsFromCategoryAndQuery(
-      undefined,
+      setRadio,
       searchValue,
     );
     if (setProducts) {
@@ -34,8 +38,22 @@ class Home extends React.Component {
     this.setState({ [name]: checkedValue });
   }
 
+  async handleRadioInput({ target: { value } }, searchValue) {
+    const setProducts = await getProductsFromCategoryAndQuery(
+      value,
+      searchValue,
+    );
+    if (!searchValue) {
+      this.setState({ productList: setProducts.results, isFirstLoading: false });
+    } else {
+      this.setState(
+        { radioValue: value }, await this.handleSearchButton(searchValue, value),
+      );
+    }
+  }
+
   render() {
-    const { searchValue, productList, isFirstLoading } = this.state;
+    const { searchValue, productList, isFirstLoading, radioValue } = this.state;
     return (
       <div>
 
@@ -53,7 +71,12 @@ class Home extends React.Component {
         )}
         <CartButton />
         <nav>
-          <Categories />
+          <Categories
+            onClick={
+              (e) => this.handleRadioInput(e, searchValue)
+            }
+            value={ radioValue }
+          />
         </nav>
       </div>
     );
