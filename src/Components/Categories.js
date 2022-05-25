@@ -22,7 +22,7 @@ class Categories extends React.Component {
           data-testid="category"
           onClick={ onClick }
         />
-        <li data-testid="category">{item.name}</li>
+        <li>{item.name}</li>
       </div>
     ));
   }

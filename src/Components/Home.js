@@ -76,7 +76,6 @@ class Home extends React.Component {
               (e) => this.handleRadioInput(e, searchValue)
             }
             value={ radioValue }
-            product={ productId }
           />
         </nav>
       </div>
