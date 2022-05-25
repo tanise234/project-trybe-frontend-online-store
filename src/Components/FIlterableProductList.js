@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 class FIlterableProductList extends Component {
   renderProductList(list) {
+    const { addToCart } = this.props;
+
     return list.map(({ id, thumbnail, title, price }) => (
       <div data-testid="product" key={ id }>
         <Link
@@ -15,6 +17,14 @@ class FIlterableProductList extends Component {
           <h3>{title}</h3>
           <p>{price}</p>
         </Link>
+        <button
+          data-testid="product-add-to-cart"
+          type="button"
+          onClick={ addToCart }
+        >
+          Adicionar ao Carrinho
+
+        </button>
       </div>
     ));
   }
@@ -35,6 +45,7 @@ class FIlterableProductList extends Component {
 
 FIlterableProductList.propTypes = {
   productList: PropTypes.arrayOf(PropTypes.any).isRequired,
+  addToCart: PropTypes.func.isRequired,
 };
 
 export default FIlterableProductList;

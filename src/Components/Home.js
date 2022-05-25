@@ -14,11 +14,13 @@ class Home extends React.Component {
       searchValue: '',
       productList: [],
       radioValue: '',
+      cartList: [],
     };
 
     this.handleSearchButton = this.handleSearchButton.bind(this);
     this.handleOnInputChange = this.handleOnInputChange.bind(this);
     this.handleRadioInput = this.handleRadioInput.bind(this);
+    this.handleCartClick = this.handleCartClick.bind(this);
   }
 
   async handleSearchButton(searchValue, radio = undefined) {
@@ -52,6 +54,16 @@ class Home extends React.Component {
     }
   }
 
+  handleCartClick({ target: { parentNode } }) {
+    const { cartList } = this.state;
+    this.setState({ cartList: [...cartList, {
+      name: parentNode.children[1].innerText,
+      src: parentNode.children[0].src,
+      price: parentNode.children[2].innerText,
+    }] });
+    return cartList;
+  }
+
   render() {
     const { searchValue, productList, isFirstLoading, radioValue } = this.state;
     return (
@@ -67,7 +79,10 @@ class Home extends React.Component {
             Digite algum termo de pesquisa ou escolha uma categoria.
           </h1>
         ) : (
-          <FIlterableProductList productList={ productList } />
+          <FIlterableProductList
+            productList={ productList }
+            addToCart={ this.handleCartClick }
+          />
         )}
         <CartButton />
         <nav>
