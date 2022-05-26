@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 class FIlterableProductList extends Component {
   renderProductList(list) {
-
     const { addToCart } = this.props;
 
     return list.map(({ id, thumbnail, title, price }) => (
@@ -12,7 +11,6 @@ class FIlterableProductList extends Component {
         <Link
           to={ { pathname: `/ProductDetails/${id}`, state: { thumbnail, title, price } } }
           data-testid="product-detail-link"
-
 
         >
           <img src={ thumbnail } alt={ title } />
