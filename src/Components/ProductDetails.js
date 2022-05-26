@@ -1,11 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { addItem } from '../services/saveProduct';
+import CartButton from './CartButton';
 
 class ProductDetails extends React.Component {
   state = {
     product: {},
   }
+  // const { addToCart } = this.props;
 
   async componentDidMount() {
     const { match: { params: { id } } } = this.props;
@@ -15,8 +18,14 @@ class ProductDetails extends React.Component {
     this.setState({ product: dataJson });
   }
 
+  handleCartClick(cartItem) {
+    addItem(cartItem);
+  }
+
   render() {
-    const { product: { thumbnail: image, title: name, price } } = this.state;
+    const { product } = this.state;
+    const { thumbnail: image, title: name, price } = product;
+    console.log(product);
     return (
       <div>
         <Link to="/">
@@ -25,9 +34,15 @@ class ProductDetails extends React.Component {
         <h1 data-testid="product-detail-name">{`${name} - ${price}`}</h1>
         <img src={ image } alt="foto do produto" />
         <p>{name}</p>
-        <Link to="/ShoppingCart">
-          <button type="button">Comprar</button>
-        </Link>
+        <button
+          data-testid="product-detail-add-to-cart"
+          type="button"
+          onClick={ () => this.handleCartClick(product) }
+        >
+          Adicionar ao Carrinho
+
+        </button>
+        <CartButton />
       </div>
     );
   }
