@@ -4,6 +4,7 @@ import FIlterableProductList from './FIlterableProductList';
 import SearchBar from './SearchProduct';
 import CartButton from './CartButton';
 import Categories from './Categories';
+import { addItem } from '../services/saveProduct';
 
 class Home extends React.Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class Home extends React.Component {
     this.handleSearchButton = this.handleSearchButton.bind(this);
     this.handleOnInputChange = this.handleOnInputChange.bind(this);
     this.handleRadioInput = this.handleRadioInput.bind(this);
+    this.handleCartClick = this.handleCartClick.bind(this);
   }
 
   async handleSearchButton(searchValue, radio = undefined) {
@@ -52,8 +54,15 @@ class Home extends React.Component {
     }
   }
 
+  handleCartClick(cartItem) {
+    addItem(cartItem);
+  }
+
   render() {
     const { searchValue, productList, isFirstLoading, radioValue } = this.state;
+    // addItem(productList[0]);
+    // addItem(productList[0]);
+    // addItem(productList[1]);
     return (
       <div>
 
@@ -67,7 +76,10 @@ class Home extends React.Component {
             Digite algum termo de pesquisa ou escolha uma categoria.
           </h1>
         ) : (
-          <FIlterableProductList productList={ productList } />
+          <FIlterableProductList
+            productList={ productList }
+            addToCart={ this.handleCartClick }
+          />
         )}
         <CartButton />
         <nav>

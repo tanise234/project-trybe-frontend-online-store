@@ -7,8 +7,15 @@ class Content extends React.Component {
   render() {
     return (
       <Router>
-        <Route exact path="/" component={ Home } />
-        <Route path="/Meu-carrinho" component={ Cart } />
+        <Route
+          exact
+          path="/"
+          render={ (props) => <Home { ...props } /> }
+        />
+        <Route
+          path="/Meu-carrinho"
+          render={ (props) => <Cart { ...props } /> }
+        />
       </Router>
     );
   }

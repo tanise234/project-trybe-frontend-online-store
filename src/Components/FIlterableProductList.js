@@ -3,11 +3,20 @@ import PropTypes from 'prop-types';
 
 class FIlterableProductList extends Component {
   renderProductList(list) {
+    const { addToCart } = this.props;
     return list.map((item) => (
       <div key={ item.id } data-testid="product">
         <img src={ item.thumbnail } alt={ item.title } />
         <h3>{item.title}</h3>
         <p>{item.price}</p>
+        <button
+          data-testid="product-add-to-cart"
+          type="button"
+          onClick={ () => addToCart(item) }
+        >
+          Adicionar ao Carrinho
+
+        </button>
       </div>
 
     ));
@@ -29,6 +38,7 @@ class FIlterableProductList extends Component {
 
 FIlterableProductList.propTypes = {
   productList: PropTypes.arrayOf(PropTypes.any).isRequired,
+  addToCart: PropTypes.func.isRequired,
 };
 
 export default FIlterableProductList;
