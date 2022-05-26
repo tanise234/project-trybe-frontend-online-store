@@ -8,9 +8,11 @@ class Content extends React.Component {
   render() {
     return (
       <Router>
+
         <Route exact path="/" component={ Home } />
         <Route path="/Meu-carrinho" component={ Cart } />
         <Route path="/ProductDetails/:id" component={ ProductDetails } />
+
       </Router>
     );
   }
