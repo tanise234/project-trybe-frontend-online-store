@@ -1,6 +1,6 @@
 import React from 'react';
 import { getProductsFromCategoryAndQuery } from '../services/api';
-import FIlterableProductList from './FIlterableProductList';
+import FilterableProductList from './FilterableProductList';
 import SearchBar from './SearchProduct';
 import CartButton from './CartButton';
 import Categories from './Categories';
@@ -76,7 +76,7 @@ class Home extends React.Component {
             Digite algum termo de pesquisa ou escolha uma categoria.
           </h1>
         ) : (
-          <FIlterableProductList
+          <FilterableProductList
             productList={ productList }
             addToCart={ this.handleCartClick }
           />

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-class FIlterableProductList extends Component {
+class FilterableProductList extends Component {
   renderProductList(list) {
     const { addToCart } = this.props;
 
@@ -48,9 +48,9 @@ class FIlterableProductList extends Component {
   }
 }
 
-FIlterableProductList.propTypes = {
+FilterableProductList.propTypes = {
   productList: PropTypes.arrayOf(PropTypes.any).isRequired,
   addToCart: PropTypes.func.isRequired,
 };
 
-export default FIlterableProductList;
+export default FilterableProductList;
