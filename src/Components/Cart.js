@@ -52,7 +52,7 @@ class Cart extends React.Component {
     const { cartListRepeated } = this.state;
     return (
       <div>
-        {cartListRepeated.length ? (
+        {getSavedItens().length ? (
           <CartItem cartList={ cartListRepeated } />
         ) : (
           <span data-testid="shopping-cart-empty-message">Seu carrinho está vazio</span>

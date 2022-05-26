@@ -6,27 +6,32 @@ class FIlterableProductList extends Component {
   renderProductList(list) {
     const { addToCart } = this.props;
 
-    return list.map(({ id, thumbnail, title, price }) => (
-      <div data-testid="product" key={ id }>
-        <Link
-          to={ { pathname: `/ProductDetails/${id}`, state: { thumbnail, title, price } } }
-          data-testid="product-detail-link"
+    return list.map((item) => {
+      const { id, thumbnail, title, price } = item;
+      return (
+        <div data-testid="product" key={ id }>
+          <Link
+            to={ {
+              pathname: `/ProductDetails/${id}`,
+              state: { thumbnail, title, price },
+            } }
+            data-testid="product-detail-link"
+          >
+            <img src={ thumbnail } alt={ title } />
+            <h3>{title}</h3>
+            <p>{price}</p>
+          </Link>
+          <button
+            data-testid="product-add-to-cart"
+            type="button"
+            onClick={ () => addToCart(item) }
+          >
+            Adicionar ao Carrinho
 
-        >
-          <img src={ thumbnail } alt={ title } />
-          <h3>{title}</h3>
-          <p>{price}</p>
-        </Link>
-        <button
-          data-testid="product-add-to-cart"
-          type="button"
-          onClick={ () => addToCart(item) }
-        >
-          Adicionar ao Carrinho
-
-        </button>
-      </div>
-    ));
+          </button>
+        </div>
+      );
+    });
   }
 
   render() {
