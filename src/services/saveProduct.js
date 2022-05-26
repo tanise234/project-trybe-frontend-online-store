@@ -26,5 +26,12 @@ export const addItem = (Item) => {
 
 export const removeItem = (Item) => {
   const SavedItens = readSavedItens();
-  saveSavedItens(SavedItens.filter((s) => s.id !== Item.id));
+  let cont = 0;
+  saveSavedItens(SavedItens.filter((s) => {
+    if (s.id === Item.id && cont === 0) {
+      cont += 1;
+      return false;
+    }
+    return true;
+  }));
 };

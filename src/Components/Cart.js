@@ -1,7 +1,7 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 import CartItem from './CartItem';
-import { getSavedItens } from '../services/saveProduct';
+import { addItem, getSavedItens, removeItem } from '../services/saveProduct';
 
 class Cart extends React.Component {
   constructor(props) {
@@ -9,16 +9,23 @@ class Cart extends React.Component {
 
     this.state = {
       cartListRepeated: [],
+      arrayOrder: [],
     };
 
     this.handleCartList = this.handleCartList.bind(this);
+    this.onClickRmv = this.onClickRmv.bind(this);
+    this.onClickAdd = this.onClickAdd.bind(this);
+    this.getArrayOrder = this.getArrayOrder.bind(this);
   }
 
   componentDidMount() {
     const setCartList = getSavedItens();
     const setList = this.handleCartList(setCartList);
-    console.log(setList);
-    this.setState({ cartListRepeated: setList });
+    const setArrayOrder = this.getArrayOrder(setList);
+    this.setState({
+      cartListRepeated: setList,
+      arrayOrder: setArrayOrder,
+    });
   }
 
   handleCartList(cartList) {
@@ -40,25 +47,45 @@ class Cart extends React.Component {
           acc.push(prodObj);
         }
       }
-
-      // console.log(acc);
-
       return acc;
     }, [{ product: '', quantity: 0 }]);
     return objList;
   }
 
+  onClickRmv(item) {
+    removeItem(item);
+    const setCartList = getSavedItens();
+    const setList = this.handleCartList(setCartList);
+    this.setState({ cartListRepeated: setList });
+  }
+
+  onClickAdd(item) {
+    addItem(item);
+    const setCartList = getSavedItens();
+    const setList = this.handleCartList(setCartList);
+    this.setState({ cartListRepeated: setList });
+  }
+
+  getArrayOrder(array) {
+    const order = array.map((item) => item.product.id);
+    return order;
+  }
+
   render() {
-    const { cartListRepeated } = this.state;
+    const { cartListRepeated, arrayOrder } = this.state;
     return (
       <div>
         {getSavedItens().length ? (
-          <CartItem cartList={ cartListRepeated } />
+          <CartItem
+            arrayOrder={ arrayOrder }
+            cartList={ cartListRepeated }
+            onClickRmv={ this.onClickRmv }
+            onClickAdd={ this.onClickAdd }
+          />
         ) : (
           <span data-testid="shopping-cart-empty-message">Seu carrinho está vazio</span>
         )}
       </div>
-
     );
   }
 }
