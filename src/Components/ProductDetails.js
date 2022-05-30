@@ -3,10 +3,16 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { addItem } from '../services/saveProduct';
 import CartButton from './CartButton';
+import EvaluationProduct from './EvaluationProduct';
+import { addEval, getSavedEval } from '../services/saveEvaluation';
 
 class ProductDetails extends React.Component {
   state = {
     product: {},
+    productEvalutionList: [],
+    email: '',
+    desc: '',
+    rating: '',
   }
   // const { addToCart } = this.props;
 
@@ -15,15 +21,39 @@ class ProductDetails extends React.Component {
     const url = `https://api.mercadolibre.com/items/${id}`;
     const getFetch = await fetch(url);
     const dataJson = await getFetch.json();
-    this.setState({ product: dataJson });
+    const setEvalList = getSavedEval();
+    this.setState({ product: dataJson, productEvalutionList: setEvalList });
   }
 
   handleCartClick(cartItem) {
     addItem(cartItem);
   }
 
+  handleEvaluation = () => {
+    const { rating, email, desc } = this.state;
+    addEval(
+      {
+        rating,
+        email,
+        desc,
+      },
+    );
+    const setEvalList = getSavedEval();
+    this.setState({ productEvalutionList: setEvalList });
+  }
+
+  handleInput = ({ target: { name, value } }) => {
+    this.setState({ [name]: value });
+  }
+
   render() {
-    const { product } = this.state;
+    const {
+      product,
+      productEvalutionList,
+      email,
+      desc,
+      rating,
+    } = this.state;
     const { thumbnail: image, title: name, price } = product;
     console.log(product);
     return (
@@ -43,6 +73,27 @@ class ProductDetails extends React.Component {
 
         </button>
         <CartButton />
+        <EvaluationProduct
+          onClick={ this.handleEvaluation }
+          onChange={ this.handleInput }
+          email={ email }
+          desc={ desc }
+          rating={ rating }
+        />
+        {
+          productEvalutionList.length > 0
+          && (
+            productEvalutionList.map(({
+              email: eEval, rating: rEval, desc: dEval,
+            }, index) => (
+              <div key={ index + 2 }>
+                <span>{eEval}</span>
+                <span>{rEval}</span>
+                <p>{dEval}</p>
+              </div>
+            ))
+          )
+        }
       </div>
     );
   }
