@@ -9,7 +9,7 @@ import { addEval, getSavedEval } from '../services/saveEvaluation';
 class ProductDetails extends React.Component {
   state = {
     product: {},
-    productEvalutionList: [],
+    productEvaluationList: [],
     email: '',
     desc: '',
     rating: '',
@@ -18,11 +18,12 @@ class ProductDetails extends React.Component {
 
   async componentDidMount() {
     const { match: { params: { id } } } = this.props;
+    const setEvalList = getSavedEval();
+    this.setState({ productEvaluationList: setEvalList });
     const url = `https://api.mercadolibre.com/items/${id}`;
     const getFetch = await fetch(url);
     const dataJson = await getFetch.json();
-    const setEvalList = getSavedEval();
-    this.setState({ product: dataJson, productEvalutionList: setEvalList });
+    this.setState({ product: dataJson });
   }
 
   handleCartClick(cartItem) {
@@ -39,7 +40,12 @@ class ProductDetails extends React.Component {
       },
     );
     const setEvalList = getSavedEval();
-    this.setState({ productEvalutionList: setEvalList });
+    this.setState({
+      productEvaluationList: setEvalList,
+      rating: '',
+      email: '',
+      desc: '',
+    });
   }
 
   handleInput = ({ target: { name, value } }) => {
@@ -49,7 +55,7 @@ class ProductDetails extends React.Component {
   render() {
     const {
       product,
-      productEvalutionList,
+      productEvaluationList,
       email,
       desc,
       rating,
@@ -81,15 +87,13 @@ class ProductDetails extends React.Component {
           rating={ rating }
         />
         {
-          productEvalutionList.length > 0
+          productEvaluationList.length > 0
           && (
-            productEvalutionList.map(({
-              email: eEval, rating: rEval, desc: dEval,
-            }, index) => (
+            productEvaluationList.map((elem, index) => (
               <div key={ index + 2 }>
-                <span>{eEval}</span>
-                <span>{rEval}</span>
-                <p>{dEval}</p>
+                <span>{elem.email}</span>
+                <span>{elem.rating}</span>
+                <p>{elem.desc}</p>
               </div>
             ))
           )
