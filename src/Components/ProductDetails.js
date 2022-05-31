@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { addItem } from '../services/saveProduct';
+import { addItem, getSavedItens } from '../services/saveProduct';
 import CartButton from './CartButton';
 import EvaluationProduct from './EvaluationProduct';
 import { addEval, getSavedEval } from '../services/saveEvaluation';
@@ -19,7 +19,10 @@ class ProductDetails extends React.Component {
   async componentDidMount() {
     const { match: { params: { id } } } = this.props;
     const setEvalList = getSavedEval();
-    this.setState({ productEvaluationList: setEvalList });
+    this.setState({
+      productEvaluationList: setEvalList,
+      qntCartItems: getSavedItens().length,
+    });
     const url = `https://api.mercadolibre.com/items/${id}`;
     const getFetch = await fetch(url);
     const dataJson = await getFetch.json();
@@ -28,6 +31,7 @@ class ProductDetails extends React.Component {
 
   handleCartClick(cartItem) {
     addItem(cartItem);
+    this.setState({ qntCartItems: getSavedItens().length });
   }
 
   handleEvaluation = () => {
@@ -59,6 +63,7 @@ class ProductDetails extends React.Component {
       email,
       desc,
       rating,
+      qntCartItems,
     } = this.state;
     const { thumbnail: image, title: name, price } = product;
     console.log(product);
@@ -77,7 +82,7 @@ class ProductDetails extends React.Component {
         >
           Adicionar ao Carrinho
         </button>
-        <CartButton />
+        <CartButton qnt={ qntCartItems } />
         <EvaluationProduct
           onClick={ this.handleEvaluation }
           onChange={ this.handleInput }

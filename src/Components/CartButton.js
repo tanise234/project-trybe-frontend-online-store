@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { getSavedItens } from '../services/saveProduct';
 
 class CartButton extends React.Component {
   render() {
+    const { qnt } = this.props;
     return (
       <Link to="/Meu-Carrinho">
         <button
@@ -12,6 +14,7 @@ class CartButton extends React.Component {
         >
           Carrinho
         </button>
+        <span data-testid="shopping-cart-size">{qnt}</span>
       </Link>
 
     );
