@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { getSavedItens } from '../services/saveProduct';
+import PropTypes from 'prop-types';
 
 class CartButton extends React.Component {
   render() {
@@ -20,5 +20,9 @@ class CartButton extends React.Component {
     );
   }
 }
+
+CartButton.propTypes = {
+  qnt: PropTypes.number.isRequired,
+};
 
 export default CartButton;
