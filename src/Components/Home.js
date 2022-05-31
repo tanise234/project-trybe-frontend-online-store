@@ -1,9 +1,10 @@
 import React from 'react';
 import { getProductsFromCategoryAndQuery } from '../services/api';
-import FIlterableProductList from './FIlterableProductList';
+import FilterableProductList from './FilterableProductList';
 import SearchBar from './SearchProduct';
 import CartButton from './CartButton';
 import Categories from './Categories';
+import { addItem, getSavedItens } from '../services/saveProduct';
 
 class Home extends React.Component {
   constructor(props) {
@@ -14,13 +15,17 @@ class Home extends React.Component {
       searchValue: '',
       productList: [],
       radioValue: '',
-      cartList: [],
+      qntCartItems: 0,
     };
 
     this.handleSearchButton = this.handleSearchButton.bind(this);
     this.handleOnInputChange = this.handleOnInputChange.bind(this);
     this.handleRadioInput = this.handleRadioInput.bind(this);
     this.handleCartClick = this.handleCartClick.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({ qntCartItems: getSavedItens().length });
   }
 
   async handleSearchButton(searchValue, radio = undefined) {
@@ -54,18 +59,19 @@ class Home extends React.Component {
     }
   }
 
-  handleCartClick({ target: { parentNode } }) {
-    const { cartList } = this.state;
-    this.setState({ cartList: [...cartList, {
-      name: parentNode.children[1].innerText,
-      src: parentNode.children[0].src,
-      price: parentNode.children[2].innerText,
-    }] });
-    return cartList;
+  handleCartClick(cartItem) {
+    addItem(cartItem);
+    this.setState({ qntCartItems: getSavedItens().length });
   }
 
   render() {
-    const { searchValue, productList, isFirstLoading, radioValue } = this.state;
+    const {
+      searchValue,
+      productList,
+      isFirstLoading,
+      radioValue,
+      qntCartItems,
+    } = this.state;
     return (
       <div>
 
@@ -79,12 +85,12 @@ class Home extends React.Component {
             Digite algum termo de pesquisa ou escolha uma categoria.
           </h1>
         ) : (
-          <FIlterableProductList
+          <FilterableProductList
             productList={ productList }
             addToCart={ this.handleCartClick }
           />
         )}
-        <CartButton />
+        <CartButton qnt={ qntCartItems } />
         <nav>
           <Categories
             onClick={
