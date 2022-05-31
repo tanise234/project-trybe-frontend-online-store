@@ -76,7 +76,6 @@ class ProductDetails extends React.Component {
           onClick={ () => this.handleCartClick(product) }
         >
           Adicionar ao Carrinho
-
         </button>
         <CartButton />
         <EvaluationProduct
