@@ -7,7 +7,7 @@ class FilterableProductList extends Component {
     const { addToCart } = this.props;
 
     return list.map((item) => {
-      const { id, thumbnail, title, price } = item;
+      const { id, thumbnail, title, price, shipping } = item;
       return (
         <div data-testid="product" key={ id }>
           <Link
@@ -20,6 +20,7 @@ class FilterableProductList extends Component {
             <img src={ thumbnail } alt={ title } />
             <h3>{title}</h3>
             <p>{price}</p>
+            {shipping.free_shipping && <p data-testid="free-shipping">Frete Grátis</p> }
           </Link>
           <button
             data-testid="product-add-to-cart"
