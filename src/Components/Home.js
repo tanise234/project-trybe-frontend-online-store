@@ -5,7 +5,7 @@ import SearchBar from './SearchProduct';
 import CartButton from './CartButton';
 import Categories from './Categories';
 import { addItem, getSavedItens } from '../services/saveProduct';
-
+// requisito 14 iniciado
 class Home extends React.Component {
   constructor(props) {
     super(props);
