@@ -2,8 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class AddAndRemoveItem extends Component {
-  disabledButton = (qnt) => {
+  disabledButtonRmv = (qnt) => {
     if (qnt === 1) {
+      return true;
+    }
+    return false;
+  }
+
+  disabledButtonAdd = (qnt) => {
+    const { cartListItem } = this.props;
+    if (qnt === cartListItem.available_quantity) {
       return true;
     }
     return false;
@@ -23,7 +31,7 @@ class AddAndRemoveItem extends Component {
           type="button"
           onClick={ () => onClickRmv(cartListItem) }
           data-testid="product-decrease-quantity"
-          disabled={ this.disabledButton(cartListQuantity) }
+          disabled={ this.disabledButtonRmv(cartListQuantity) }
         >
           -
         </button>
@@ -36,6 +44,7 @@ class AddAndRemoveItem extends Component {
           type="button"
           onClick={ () => onClickAdd(cartListItem) }
           data-testid="product-increase-quantity"
+          disabled={ this.disabledButtonAdd(cartListQuantity) }
         >
           +
         </button>
