@@ -2,6 +2,7 @@ import React from 'react';
 // import PropTypes from 'prop-types';
 import CartItem from './CartItem';
 import { addItem, getSavedItens, removeItem } from '../services/saveProduct';
+import { Link } from 'react-router-dom';
 
 class Cart extends React.Component {
   constructor(props) {
@@ -85,6 +86,9 @@ class Cart extends React.Component {
         ) : (
           <span data-testid="shopping-cart-empty-message">Seu carrinho está vazio</span>
         )}
+        <Link to="/Checkout">
+          <button type="button" data-testid="checkout-products">Finalizar a compra</button>
+        </Link>
       </div>
     );
   }

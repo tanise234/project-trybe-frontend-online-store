@@ -3,22 +3,23 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { addItem } from '../services/saveProduct';
 import CartButton from './CartButton';
+import EvaluationProduct from './EvaluationProduct';
+import { addEval, getSavedEval } from '../services/saveEvaluation';
 
 class ProductDetails extends React.Component {
   state = {
     product: {},
+    productEvaluationList: [],
     email: '',
-    rating: '',
     desc: '',
-  };
+    rating: '',
+  }
   // const { addToCart } = this.props;
 
   async componentDidMount() {
-    const {
-      match: {
-        params: { id },
-      },
-    } = this.props;
+    const { match: { params: { id } } } = this.props;
+    const setEvalList = getSavedEval();
+    this.setState({ productEvaluationList: setEvalList });
     const url = `https://api.mercadolibre.com/items/${id}`;
     const getFetch = await fetch(url);
     const dataJson = await getFetch.json();
@@ -30,16 +31,35 @@ class ProductDetails extends React.Component {
   }
 
   handleEvaluation = () => {
-    this.setState({});
-  };
+    const { rating, email, desc } = this.state;
+    addEval(
+      {
+        rating,
+        email,
+        desc,
+      },
+    );
+    const setEvalList = getSavedEval();
+    this.setState({
+      productEvaluationList: setEvalList,
+      rating: '',
+      email: '',
+      desc: '',
+    });
+  }
 
-  handleOnInput({ target: { name, type, checked, value } }) {
-    const checkedValue = type === 'checkbox' ? checked : value;
-    this.setState({ [name]: checkedValue });
+  handleInput = ({ target: { name, value } }) => {
+    this.setState({ [name]: value });
   }
 
   render() {
-    const { product } = this.state;
+    const {
+      product,
+      productEvaluationList,
+      email,
+      desc,
+      rating,
+    } = this.state;
     const { thumbnail: image, title: name, price } = product;
     console.log(product);
     return (
@@ -58,76 +78,25 @@ class ProductDetails extends React.Component {
           Adicionar ao Carrinho
         </button>
         <CartButton />
-        <div>
-          <h4>Avaliação</h4>
-          <form>
-            <label htmlFor="input-email">
-              <input
-                type="email"
-                data-testid="product-detail-email"
-                value={ email }
-                name="email"
-                id="input-email"
-                onChange={ this.handleInput }
-              />
-            </label>
-            <div>
-              <label htmlFor="input-radio">
-                <input
-                  type="radio"
-                  id="input-radio"
-                  value={ rating }
-                  name="rating"
-                  data-testid={ `${index}-rating` }
-                />
-                <input
-                  type="radio"
-                  id="input-radio"
-                  value={ rating }
-                  name="rating"
-                  data-testid={ `${index}-rating` }
-                />
-                <input
-                  type="radio"
-                  id="input-radio"
-                  value={ rating }
-                  name="rating"
-                  data-testid={ `${index}-rating` }
-                />
-                <input
-                  type="radio"
-                  id="input-radio"
-                  value={ rating }
-                  name="rating"
-                  data-testid={ `${index}-rating` }
-                />
-                <input
-                  type="radio"
-                  id="input-radio"
-                  value={ rating }
-                  name="rating"
-                  data-testid={ `${index}-rating` }
-                />
-              </label>
-            </div>
-            <label htmlFor="text-area">
-              <textarea
-                data-testid="product-detail-evaluation"
-                value={ desc }
-                name="desc"
-                id="text-area"
-                onChange={ this.handleInput }
-              />
-            </label>
-            <button
-              type="button"
-              data-testid="submit-review-btn"
-              onClick={ this.handleEvaluation }
-            >
-              Mandar
-            </button>
-          </form>
-        </div>
+        <EvaluationProduct
+          onClick={ this.handleEvaluation }
+          onChange={ this.handleInput }
+          email={ email }
+          desc={ desc }
+          rating={ rating }
+        />
+        {
+          productEvaluationList.length > 0
+          && (
+            productEvaluationList.map((elem, index) => (
+              <div key={ index + 2 }>
+                <span>{elem.email}</span>
+                <span>{elem.rating}</span>
+                <p>{elem.desc}</p>
+              </div>
+            ))
+          )
+        }
       </div>
     );
   }

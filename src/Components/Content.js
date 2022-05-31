@@ -3,6 +3,7 @@ import { Route, BrowserRouter as Router } from 'react-router-dom';
 import Home from './Home';
 import Cart from './Cart';
 import ProductDetails from './ProductDetails';
+import Checkout from './Checkout';
 
 class Content extends React.Component {
   render() {
@@ -12,6 +13,7 @@ class Content extends React.Component {
         <Route exact path="/" component={ Home } />
         <Route path="/Meu-carrinho" component={ Cart } />
         <Route path="/ProductDetails/:id" component={ ProductDetails } />
+        <Route path="/Checkout" component={ Checkout } />
 
       </Router>
     );
